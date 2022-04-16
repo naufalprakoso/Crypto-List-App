@@ -1,0 +1,89 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdk 32
+
+    defaultConfig {
+        applicationId "com.naufalprakoso.cryptotest"
+        minSdk 21
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField "String", "API_BASE", '"https://api.coincap.io/v2/"'
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "API_BASE", '"https://api.coincap.io/v2/"'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    //Kotlin
+    api kotlinDep.stdlib
+    api kotlinDep.coroutines
+
+    //Android
+    api androidDependencies.appCompat
+    implementation androidDependencies.androidXCore
+    implementation androidDependencies.activityKtx
+    implementation androidDependencies.fragmentKtx
+
+    //DI
+    api daggerDep.core
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    kapt daggerDep.compiler
+
+    //Arch components
+    api archComponents.components
+    kapt archComponents.componentsCompiler
+    api archComponents.viewModelKtx
+
+    //Room
+    api roomDb.core
+    api roomDb.ktx
+    kapt roomDb.compiler
+
+    //Networking
+    api networking.okhttp
+    api networking.okhttpLog
+    api networking.gson
+    api networking.retrofit
+    api networking.retrofitGson
+
+    //UI
+    api ui.constraintLayout
+    api ui.recyclerview
+    api ui.material
+
+    //Test
+    testImplementation testing.junit
+    testImplementation testing.mockitoKotlin
+    testImplementation testing.coroutines
+    testImplementation testing.archTesting
+}
